@@ -1,0 +1,12 @@
+jrowlandsnz_todo_api_task:
+    resource: "@JrowlandsnzTodoApiBundle/Resources/config/routing/task.yml"
+    prefix:   /task
+
+jrowlandsnz_todo_api_project:
+    resource: "@JrowlandsnzTodoApiBundle/Resources/config/routing/project.yml"
+    prefix:   /project
+
+jrowlandsnz_todo_api_homepage:
+    path:     /
+    defaults: { _controller: JrowlandsnzTodoApiBundle:Default:index }
+

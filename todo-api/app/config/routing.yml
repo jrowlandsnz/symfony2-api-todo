@@ -1,0 +1,7 @@
+jrowlandsnz_todo_api:
+    resource: "@JrowlandsnzTodoApiBundle/Resources/config/routing.yml"
+    prefix:   /
+
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
