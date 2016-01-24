@@ -1,0 +1,10 @@
+api_project:
+    pattern:  /
+    defaults: { _controller: "JrowlandsnzTodoApiBundle:Project:indexApi", _format: ~ }
+    methods:  GET
+    
+api_project_show:
+    pattern:  /{id}
+    defaults: { _controller: "JrowlandsnzTodoApiBundle:Project:showApi", _format: ~ }
+    methods:  GET    
+    

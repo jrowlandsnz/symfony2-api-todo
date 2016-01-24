@@ -1,10 +1,15 @@
-jrowlandsnz_todo_api_task:
+jrowlandsnz_todo_api_task_admin:
     resource: "@JrowlandsnzTodoApiBundle/Resources/config/routing/task.yml"
     prefix:   /admin/task
 
-jrowlandsnz_todo_api_project:
+jrowlandsnz_todo_api_project_admin:
     resource: "@JrowlandsnzTodoApiBundle/Resources/config/routing/project.yml"
     prefix:   /admin/project
+    
+jrowlandsnz_todo_api_project_api:
+    resource: "@JrowlandsnzTodoApiBundle/Resources/config/routing/project-api.yml"
+    prefix:   /api/project
+    type: rest
 
 jrowlandsnz_todo_api_homepage:
     path:     /

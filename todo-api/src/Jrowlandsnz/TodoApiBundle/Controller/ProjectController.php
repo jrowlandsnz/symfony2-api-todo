@@ -3,7 +3,9 @@
 namespace Jrowlandsnz\TodoApiBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+//use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\Annotations as Rest;
 
 use Jrowlandsnz\TodoApiBundle\Entity\Project;
 use Jrowlandsnz\TodoApiBundle\Form\ProjectType;
@@ -12,9 +14,47 @@ use Jrowlandsnz\TodoApiBundle\Form\ProjectType;
  * Project controller.
  *
  */
-class ProjectController extends Controller
+class ProjectController extends FOSRestController
 {
+    /**
+     * @Rest\View
+     */
+    public function indexApiAction()
+    {
+        $em = $this->getDoctrine()->getManager();
 
+        $entities = $em->getRepository('JrowlandsnzTodoApiBundle:Project')->findAll();
+        /**
+        $view = $this->view($entities, 200)
+            ->setTemplate("JrowlandsnzTodoApiBundle:Project:index.html.twig")
+            //->setTemplateVar('users')
+        ;
+
+        return $this->handleView($view);
+        // */
+
+        return array(
+            'projects' => $entities);
+    }
+    
+    
+    /**
+     * @Rest\View
+     */
+    public function showApiAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('JrowlandsnzTodoApiBundle:Project')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Project entity.');
+        }
+
+        return array('project' => $entity);
+    }
+    
+    
     /**
      * Lists all Project entities.
      *
