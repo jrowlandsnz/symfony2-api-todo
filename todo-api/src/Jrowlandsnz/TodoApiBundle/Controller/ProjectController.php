@@ -24,14 +24,6 @@ class ProjectController extends FOSRestController
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('JrowlandsnzTodoApiBundle:Project')->findAll();
-        /**
-        $view = $this->view($entities, 200)
-            ->setTemplate("JrowlandsnzTodoApiBundle:Project:index.html.twig")
-            //->setTemplateVar('users')
-        ;
-
-        return $this->handleView($view);
-        // */
 
         return array(
             'projects' => $entities);
@@ -52,6 +44,30 @@ class ProjectController extends FOSRestController
         }
 
         return array('project' => $entity);
+    }
+    
+    /**
+     * @Rest\View
+     */
+    public function showTaskApiAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $query = $em->getRepository('JrowlandsnzTodoApiBundle:Task')
+                ->createQueryBuilder('t')
+                ->where('t.project = :project')
+                ->setParameter('project', $id)
+                ->getQuery();
+                
+         
+        $entity = $query->getResult();
+                //getRepository('JrowlandsnzTodoApiBundle:Task')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Task entity.');
+        }
+
+        return array('tasks' => $entity);
     }
     
     

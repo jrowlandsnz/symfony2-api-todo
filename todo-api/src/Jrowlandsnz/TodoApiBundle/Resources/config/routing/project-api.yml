@@ -7,4 +7,9 @@ api_project_show:
     pattern:  /{id}
     defaults: { _controller: "JrowlandsnzTodoApiBundle:Project:showApi", _format: ~ }
     methods:  GET    
+
+api_project_task:
+    pattern:  /{id}/task
+    defaults: { _controller: "JrowlandsnzTodoApiBundle:Project:showTaskApi", _format: ~ }
+    methods:  GET 
     
