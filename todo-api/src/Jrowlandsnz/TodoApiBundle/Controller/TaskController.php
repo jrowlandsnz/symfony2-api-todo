@@ -3,7 +3,9 @@
 namespace Jrowlandsnz\TodoApiBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+//use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\Annotations as Rest;
 
 use Jrowlandsnz\TodoApiBundle\Entity\Task;
 use Jrowlandsnz\TodoApiBundle\Form\TaskType;
@@ -12,9 +14,38 @@ use Jrowlandsnz\TodoApiBundle\Form\TaskType;
  * Task controller.
  *
  */
-class TaskController extends Controller
+class TaskController extends FOSRestController
 {
+    /**
+     * @Rest\View
+     */
+    public function indexApiAction()
+    {
+        $em = $this->getDoctrine()->getManager();
 
+        $entities = $em->getRepository('JrowlandsnzTodoApiBundle:Task')->findAll();
+
+        return array(
+            'tasks' => $entities);
+    }
+    
+    
+    /**
+     * @Rest\View
+     */
+    public function showApiAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('JrowlandsnzTodoApiBundle:Task')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Task entity.');
+        }
+
+        return array('task' => $entity);
+    }
+    
     /**
      * Lists all Task entities.
      *
