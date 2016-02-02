@@ -6,6 +6,9 @@ use Symfony\Component\HttpFoundation\Request;
 //use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\View\View;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpFoundation\Response;
 
 use Jrowlandsnz\TodoApiBundle\Entity\Project;
 use Jrowlandsnz\TodoApiBundle\Form\ProjectType;
@@ -25,6 +28,8 @@ class ProjectController extends FOSRestController
 
         $entities = $em->getRepository('JrowlandsnzTodoApiBundle:Project')->findAll();
 
+        
+        //TODO: Update this to use View class and return correct HTTP response code
         return array(
             'projects' => $entities);
     }
@@ -70,6 +75,30 @@ class ProjectController extends FOSRestController
         return array('tasks' => $entity);
     }
     
+    public function postApiAction(Request $request)
+    {
+        $entity = new Project();
+        $form = $this->createCreateForm($entity);
+        $form->handleRequest($request);
+        
+        //TODO: this is not ideal, will need to come back and look at this later
+        $params = json_decode($request->getContent(), true);
+        $entity->setDateDue(new \DateTime($params['dateDue']));
+
+        $errors = $this->get('validator')->validate($entity);
+        if(sizeof($errors) > 0) {
+            return new View($errors,Response::HTTP_UNPROCESSABLE_ENTITY);
+            
+        }
+        else {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entity);
+            $em->flush();
+
+            return new View($entity, Response::HTTP_CREATED);
+        }
+      
+    }
     
     /**
      * Lists all Project entities.
@@ -94,6 +123,10 @@ class ProjectController extends FOSRestController
         $entity = new Project();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
+        
+        $logger = $this->get('logger');
+        $logger->debug($entity);
+        $logger->debug($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();

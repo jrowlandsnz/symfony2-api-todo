@@ -6,6 +6,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+//use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+
 class ProjectType extends AbstractType
 {
     /**
@@ -13,12 +15,13 @@ class ProjectType extends AbstractType
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
-    {
+    {   
         $builder
             ->add('name')
             ->add('description')
-            ->add('dateDue')
+            ->add('dateDue') 
         ;
+
     }
     
     /**
@@ -36,6 +39,10 @@ class ProjectType extends AbstractType
      */
     public function getName()
     {
-        return 'jrowlandsnz_todoapibundle_project';
+        //return 'jrowlandsnz_todoapibundle_project';
+                // this is important in order to be able
+        // to provide the entity directly in the json
+        //https://github.com/allan-simon/symfony2-rest-api-example/commit/61c0ca878d82151915705808a5dd20295c8c3b2c
+        return '';
     }
 }
